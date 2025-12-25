@@ -1,9 +1,10 @@
-import { Board } from "src/boards/entities/board.entity";
 import { Task } from "src/tasks/entities/task.entity";
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { User } from "src/users/entities/user.entity";
+import { Column, DeleteDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
-export class User {
+export class Board {
+
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
@@ -12,31 +13,19 @@ export class User {
     })
     name: string;
 
-    @Column('text', {
-        nullable: false,
-        unique: true
-    })
-    email: string;
-
-    @Column('text', {
-        nullable: false
-    })
-    password: string;
+    @ManyToOne(
+        () => User,
+        (user) => user.boards
+    )
+    user: User;
 
     @OneToMany(
         () => Task,
-        (task) => task.user,
+        (task) => task.board,
         {cascade: true}
     )
     tasks: Task[];
-
-    @OneToMany(
-        () => Board,
-        (board) => board.user,
-        {cascade: true}
-    )
-    boards: Board[];
-
+    
     @Column('timestamp', {
         default: () => 'CURRENT_TIMESTAMP'
     })
@@ -48,8 +37,7 @@ export class User {
     })
     updatedAt: Date;
 
-    @Column('timestamp', {
-        nullable: true
-    })
+    @DeleteDateColumn()
     deletedAt?: Date;
+
 }

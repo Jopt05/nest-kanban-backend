@@ -1,3 +1,4 @@
+import { Board } from "src/boards/entities/board.entity";
 import { User } from "src/users/entities/user.entity";
 import { Column, DeleteDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
@@ -31,6 +32,16 @@ export class Task {
         }
     )
     user: User;
+
+    @ManyToOne(
+        () => Board,
+        (board) => board.tasks,
+        {
+            onDelete: 'CASCADE',
+            onUpdate: 'CASCADE'
+        }
+    )
+    board: Board;
 
     @Column('timestamp', {
         default: () => 'CURRENT_TIMESTAMP'

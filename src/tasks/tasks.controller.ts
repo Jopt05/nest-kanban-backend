@@ -6,25 +6,35 @@ import { User } from 'src/users/entities/user.entity';
 import { AuthGuard } from '@nestjs/passport';
 import { UpdateTaskDto } from './dtos/update-task.dto';
 
-@Controller('tasks')
+@Controller('boards/:boardId/tasks')
 export class TasksController {
   constructor(private readonly tasksService: TasksService) {}
 
   @Get()
   @UseGuards( AuthGuard('jwt') )
-  async findAll(@getUser() user: User) {
-    return this.tasksService.findAll(user);
+  async findAll(
+    @getUser() user: User, 
+    @Param('boardId', new ParseUUIDPipe({version: '4'})) boardId: string
+  ) {
+    return this.tasksService.findAll(user, boardId);
   }
 
   @Post()
   @UseGuards( AuthGuard('jwt') )
-  async create( @Body() createTaskDto: CreateTaskDto, @getUser() user: User ) {
-    return this.tasksService.createTask( createTaskDto, user );
+  async create( 
+    @Body() createTaskDto: CreateTaskDto, 
+    @getUser() user: User,
+    @Param('boardId', new ParseUUIDPipe({version: '4'})) boardId: string
+  ) {
+    return this.tasksService.createTask( createTaskDto, user, boardId );
   }
 
   @Put('/:id')
   @UseGuards( AuthGuard('jwt') )
-  async update( @Param('id', new ParseUUIDPipe({version: '4'})) id: string, @Body() updateTaskDto: UpdateTaskDto ) {
+  async update( 
+    @Param('id', new ParseUUIDPipe({version: '4'})) id: string, 
+    @Body() updateTaskDto: UpdateTaskDto 
+  ) {
     return this.tasksService.updateTask( updateTaskDto, id );
   }
 

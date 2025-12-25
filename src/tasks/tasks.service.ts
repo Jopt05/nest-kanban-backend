@@ -13,7 +13,7 @@ export class TasksService {
         @InjectRepository(Task) private readonly taskRepository: Repository<Task>
     ){}
 
-    async findAll(user: User) {
+    async findAll(user: User, boardId: string) {
         return this.taskRepository.find({
             relations: {
                 user: true
@@ -21,16 +21,22 @@ export class TasksService {
             where: {
                 user: {
                     id: user.id
+                },
+                board: {
+                    id: boardId
                 }
             }
         })
     }
 
-    async createTask( createTaskDto: CreateTaskDto, user: User ) {
+    async createTask( createTaskDto: CreateTaskDto, user: User, boardId: string ) {
         try {
             const task = this.taskRepository.create({
             ...createTaskDto,
-            user
+            user,
+            board: {
+                id: boardId
+            }
         })
         return this.taskRepository.save(task)
         } catch (error) {
