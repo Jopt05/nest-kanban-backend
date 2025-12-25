@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Task } from "src/tasks/entities/task.entity";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class User {
@@ -17,9 +18,17 @@ export class User {
     email: string;
 
     @Column('text', {
-        nullable: false
+        nullable: false,
+        select: false
     })
     password: string;
+
+    @OneToMany(
+        () => Task,
+        (task) => task.user,
+        {cascade: true}
+    )
+    tasks: Task[];
 
     @Column('timestamp', {
         default: () => 'CURRENT_TIMESTAMP'

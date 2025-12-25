@@ -4,6 +4,7 @@ import { JoiValidationSchema } from './config/joi.validation';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
+import { TasksModule } from './tasks/tasks.module';
 
 
 @Module( {
@@ -24,7 +25,8 @@ import { AuthModule } from './auth/auth.module';
       }),
 
       UsersModule,
-      AuthModule
+      AuthModule,
+      TasksModule
     ],
     controllers: [],
     providers: [],
