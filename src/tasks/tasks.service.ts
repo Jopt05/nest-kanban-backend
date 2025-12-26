@@ -16,7 +16,8 @@ export class TasksService {
     async findAll(user: User, boardId: string) {
         return this.taskRepository.find({
             relations: {
-                user: true
+                user: true,
+                subtasks: true
             },
             where: {
                 user: {
