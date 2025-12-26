@@ -6,6 +6,7 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { TasksModule } from './tasks/tasks.module';
 import { BoardsModule } from './boards/boards.module';
+import { SubtasksModule } from './subtasks/subtasks.module';
 
 
 @Module( {
@@ -28,7 +29,8 @@ import { BoardsModule } from './boards/boards.module';
       UsersModule,
       AuthModule,
       TasksModule,
-      BoardsModule
+      BoardsModule,
+      SubtasksModule
     ],
     controllers: [],
     providers: [],

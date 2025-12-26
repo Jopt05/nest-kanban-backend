@@ -1,6 +1,7 @@
 import { Board } from "src/boards/entities/board.entity";
+import { Subtask } from "src/subtasks/entities/subtask.entity";
 import { User } from "src/users/entities/user.entity";
-import { Column, DeleteDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, DeleteDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Task {
@@ -42,6 +43,16 @@ export class Task {
         }
     )
     board: Board;
+
+    @OneToMany(
+        () => Subtask,
+        (subtask) => subtask.task,
+        {
+            onDelete: 'CASCADE',
+            onUpdate: 'CASCADE'
+        }
+    )
+    subtasks: Subtask[];
 
     @Column('timestamp', {
         default: () => 'CURRENT_TIMESTAMP'
