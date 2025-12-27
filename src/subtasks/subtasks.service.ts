@@ -60,8 +60,7 @@ export class SubtasksService {
             if (!subtask) {
                 throw new NotFoundException(`Subtask with ID ${id} not found`);
             }
-            await this.subtaskRepository.update(id, { deletedAt: new Date() });
-            return this.subtaskRepository.findOne({ where: { id } });
+            return this.subtaskRepository.update(id, { deletedAt: new Date() });
         } catch (error) {
             console.error(error)
             throw new InternalServerErrorException(error)
