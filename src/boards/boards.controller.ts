@@ -21,7 +21,7 @@ export class BoardsController {
     return this.boardsService.createBoard(createBoardDto, user)
   }
 
-  @Put()
+  @Put(':id')
   @UseGuards( AuthGuard('jwt') )
   update( 
     @Param('id', new ParseUUIDPipe({version: '4'})) id: string, 
@@ -30,7 +30,7 @@ export class BoardsController {
     return this.boardsService.updateBoard(id, updateBoardDto)
   }
 
-  @Delete()
+  @Delete(':id')
   @UseGuards( AuthGuard('jwt') )
   delete( @Param('id', new ParseUUIDPipe({version: '4'})) id: string ) {
     return this.boardsService.deleteBoard(id)
