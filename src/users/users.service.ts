@@ -4,12 +4,14 @@ import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dtos/create-user.dto';
 import * as bcrypt from 'bcrypt';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UsersService {
 
     constructor(
-        @InjectRepository( User ) private readonly userRepository: Repository<User>
+        @InjectRepository( User ) private readonly userRepository: Repository<User>,
+        private jwtService: JwtService,
     ){}
 
     async createUser( createUserDto: CreateUserDto ) {
@@ -19,8 +21,9 @@ export class UsersService {
                 ...rest,
                 password: await bcrypt.hash(password, 10)
             })
-            await this.userRepository.save( user );
-            return user;  
+            await this.userRepository.save( user )
+            const token = this.jwtService.sign({ id: user.id })
+            return { user, token };  
         } catch (error) {
             console.error( error )
             throw new InternalServerErrorException()
