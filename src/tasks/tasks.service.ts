@@ -68,8 +68,7 @@ export class TasksService {
                 throw new NotFoundException(`Task with ID ${id} not found`)
             }
             
-            await this.taskRepository.update(id, { deletedAt: new Date() })
-            return this.taskRepository.findOneBy({ id })
+            return await this.taskRepository.update(id, { deletedAt: new Date() })
         } catch (error) {
             console.error(error)
             throw new InternalServerErrorException()
